@@ -1,0 +1,68 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
+<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
+<MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here: <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit"><b>www.mudblazor.com</b></MudLink></MudAlert>
+
+<MudForm @ref="MudForm">
+    <MudSelect T="Country"
+               Label="Country"
+               Variant="Variant.Text"
+               @bind-SelectedValues="@SelectedCountries"
+               MultiSelection="true"
+               Clearable="true"
+               ToStringFunc="@(country => country.Name)"
+               Required="true"
+    >
+        
+        @foreach (var country in Countries)
+        {
+            <MudSelectItem T="Country" Value="country">@country.Name</MudSelectItem>
+        }
+        
+    </MudSelect>
+    
+    <MudButton OnClick="ValidateForm">Validate Form</MudButton>
+</MudForm>
+
+
+@code {
+
+    public MudForm MudForm { get; set; }
+    public List<Country> Countries { get; set; }
+    public IEnumerable<Country> SelectedCountries { get; set; }
+    
+    public Index()
+    {
+        Countries = new List<Country>();
+        SelectedCountries = new List<Country>();
+    }
+    
+    protected override void OnInitialized()
+    {
+        Countries.Add(new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Switzerland"
+        });
+
+        Countries.Add(new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Germany"
+        });
+        
+        Countries.Add(new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Italy"
+        });
+    }
+
+    protected void ValidateForm()
+    {
+        MudForm.Validate();
+    }
+}
